@@ -1,0 +1,94 @@
+schema_version: 2
+
+document:
+  type: targeted
+  role_target: Museum Programs Manager
+  show_summary: true
+  show_skills: false
+  show_projects: false
+  show_training: true
+  show_certifications: true
+  show_clearance: false
+
+basics:
+  name: John Smith
+  headline: Museum Programs Manager
+  location: Burlington, VT
+  phone: 802-555-0183
+  emails:
+    - john.smith@example.com
+    - john.a.smith@example.org
+  links:
+    - label: Portfolio
+      url: https://example.com/john-smith
+    - label: LinkedIn
+      url: https://www.linkedin.com/in/john-smith-example
+
+summary: >-
+  Museum programs and visitor experience leader with 15+ years of experience
+  building public-facing programs, coordinating community partnerships, and
+  improving day-to-day operations for cultural institutions. Strong background
+  in event planning, volunteer coordination, grant-supported programming,
+  public education, and cross-team collaboration, with a record of taking
+  initiative, documenting repeatable processes, and helping small teams work
+  more smoothly.
+
+experience:
+  - company: Green Valley Museum
+    location: Burlington, VT
+    start: Mar 2018
+    end: Present
+    roles:
+      - title: Museum Programs Manager
+        bullets:
+          - Designed seasonal public programs, workshops, and special events for families, schools, and adult learners.
+          - Coordinated partnerships with local schools, libraries, and historical societies to expand attendance and community engagement.
+          - Standardized event planning checklists, volunteer guides, and exhibit support materials to improve consistency across programs.
+          - Managed program calendars, vendor coordination, and day-of logistics for recurring and one-time events.
+
+      - title: Visitor Experience Coordinator
+        start: Jun 2015
+        end: Feb 2018
+        bullets:
+          - Supervised front-of-house operations, volunteer scheduling, and visitor communications.
+          - Improved visitor intake and wayfinding materials to reduce confusion during peak attendance periods.
+          - Supported exhibit openings, educational tours, and donor events.
+
+  - company: Riverfront Arts Council
+    location: Montpelier, VT
+    start: Aug 2011
+    end: May 2015
+    roles:
+      - title: Community Programs Coordinator
+        bullets:
+          - Planned community arts workshops, neighborhood events, and outreach activities for mixed-age audiences.
+          - Tracked program participation, maintained grant reporting records, and prepared summary materials for board review.
+          - Worked with artists, educators, and civic partners to coordinate shared programming.
+
+  - company: Town of Essex Recreation Department
+    location: Essex, VT
+    start: Jan 2008
+    end: Jul 2011
+    roles:
+      - title: Recreation Assistant
+        bullets:
+          - Supported scheduling, registration, and communications for seasonal recreation programs and public events.
+          - Maintained program records and assisted with facility setup, supplies, and participant support.
+
+education:
+  - degree: B.A., History
+    school: University of Vermont
+    year: 2007
+
+training:
+  - name: Grant Writing Workshop
+    provider: New England Arts Collaborative
+    completed: 2022
+
+certifications:
+  - name: First Aid/CPR
+    issuer: American Red Cross
+    issued: 2025
+    expires: 2027
+
+clearance: []

@@ -1,0 +1,266 @@
+#set page(
+  paper: "us-letter",
+  margin: (x: 0.6in, y: 0.55in),
+)
+
+#set text(font: "Liberation Sans", size: 10pt, fill: rgb("#1f2937"))
+#set par(justify: false, leading: 0.72em)
+
+#let accent = rgb("#0f766e")
+#let heading = rgb("#0f172a")
+#let muted = rgb("#64748b")
+#let body = rgb("#334155")
+#let rule = rgb("#cbd5e1")
+
+#let section(title) = [
+  #v(0.9em)
+  #text(size: 10pt, weight: "bold", fill: accent)[#title]
+  #v(0.12em)
+  #line(length: 100%, stroke: 0.8pt + rule)
+  #v(0.32em)
+]
+
+#let render_links(items) = {
+  for item in items {
+    if item.url != none and item.label != none {
+      [#link(item.url)[#item.label]]
+    }
+  }
+}
+
+#align(left)[
+  #text(size: 22pt, weight: "bold", fill: heading)[{{ basics.name | t }}]
+  {% if basics.title %}
+  #linebreak()
+  #text(size: 11pt, fill: muted)[{{ basics.title | t }}]
+  {% endif %}
+  #v(0.35em)
+  #text(size: 9pt, fill: muted)[
+    {% set ns = namespace(first=true) %}
+    {% if basics.phone %}
+      {% if not ns.first %} • {% endif %}
+      {{ basics.phone | t }}
+      {% set ns.first = false %}
+    {% endif %}
+    {% if basics.emails %}
+      {% for email in basics.emails %}
+        {% if not ns.first %} • {% endif %}
+        #link("mailto:{{ email }}")[{{ email | t }}]
+        {% set ns.first = false %}
+      {% endfor %}
+    {% elif basics.email %}
+      {% if not ns.first %} • {% endif %}
+      #link("mailto:{{ basics.email }}")[{{ basics.email | t }}]
+      {% set ns.first = false %}
+    {% endif %}
+    {% if basics.location %}
+      {% if not ns.first %} • {% endif %}
+      {{ basics.location | t }}
+      {% set ns.first = false %}
+    {% endif %}
+  ]
+  {% if basics.links %}
+  #linebreak()
+  #text(size: 9pt, fill: muted)[
+    {% set ns = namespace(first=true) %}
+    {% for link in basics.links %}
+      {% if link.url and link.label %}
+        {% if not ns.first %} • {% endif %}
+        #link("{{ link.url }}")[{{ link.label | t }}]
+        {% set ns.first = false %}
+      {% endif %}
+    {% endfor %}
+  ]
+  {% endif %}
+]
+
+{% if document.show_summary is not defined or document.show_summary %}
+{% if summary %}
+#section[Summary]
+#text(size: 9.6pt, fill: body)[{{ summary | t }}]
+{% endif %}
+{% endif %}
+
+{% if experience %}
+#section[Experience]
+{% for job in experience %}
+#grid(
+  columns: (1.25in, 1fr),
+  column-gutter: 0.65em,
+  [
+    {% if job.start %}
+    #text(size: 9pt, weight: "semibold", fill: accent)[{{ job.start | text_value | t }}]
+    {% endif %}
+    {% if job.end %}
+    #linebreak()
+    #text(size: 9pt, fill: muted)[{{ job.end | text_value | t }}]
+    {% endif %}
+  ],
+  [
+    #text(size: 10.5pt, weight: "bold", fill: heading)[{{ job.company | t }}]
+    {% if job.location %}
+    #linebreak()
+    #text(size: 9.2pt, fill: muted)[{{ job.location | t }}]
+    {% endif %}
+    {% if job.roles %}
+      {% for role in job.roles %}
+      {% if not loop.first %}
+      #v(0.22em)
+      {% endif %}
+      #block(width: 100%)[
+        #grid(
+          columns: (1fr, auto),
+          column-gutter: 0.4em,
+          [#text(size: 9.8pt, weight: "bold", fill: heading)[{{ role.title | t }}]],
+          [
+            {% if role.start or role.end %}
+            #text(size: 8.9pt, fill: muted)[
+              {% if role.start %}{{ role.start | text_value | t }}{% endif %}{% if role.start and role.end %}–{% endif %}{% if role.end %}{{ role.end | text_value | t }}{% endif %}
+            ]
+            {% endif %}
+          ],
+        )
+        {% if role.summary %}
+        #v(0.1em)
+        #text(size: 9.1pt, fill: body)[{{ role.summary | t }}]
+        {% endif %}
+        {% if role.bullets %}
+        #v(0.12em)
+        #list(
+          {% for bullet in role.bullets %}
+          [{{ bullet | t }}],
+          {% endfor %}
+        )
+        {% endif %}
+      ]
+      {% endfor %}
+    {% elif job.role %}
+      #v(0.22em)
+      #text(size: 9.8pt, weight: "bold", fill: heading)[{{ job.role | t }}]
+      {% if job.summary %}
+      #v(0.1em)
+      #text(size: 9.1pt, fill: body)[{{ job.summary | t }}]
+      {% endif %}
+      {% if job.bullets %}
+      #v(0.12em)
+      {% for bullet in job.bullets -%}
+      - {{ bullet | t }}
+      {% endfor %}
+      {% endif %}
+    {% endif %}
+  ],
+)
+#v(0.42em)
+{% endfor %}
+{% endif %}
+
+{% if education %}
+#section[Education]
+{% for edu in education %}
+#grid(
+  columns: (1.25in, 1fr),
+  column-gutter: 0.65em,
+  [
+    {% if edu.year %}
+    #text(size: 9pt, weight: "semibold", fill: accent)[{{ edu.year | text_value | t }}]
+    {% elif edu.start %}
+    #text(size: 9pt, weight: "semibold", fill: accent)[{{ edu.start | text_value | t }}]
+    {% endif %}
+    {% if edu.end and not edu.year %}
+    #linebreak()
+    #text(size: 9pt, fill: muted)[{{ edu.end | text_value | t }}]
+    {% endif %}
+  ],
+  [
+    #text(size: 10.1pt, weight: "bold", fill: heading)[{{ edu.degree | t }}]
+    {% if edu.school %}
+    #linebreak()
+    #text(size: 9.2pt, fill: muted)[{{ edu.school | t }}{% if edu.location %} • {{ edu.location | t }}{% endif %}]
+    {% endif %}
+  ],
+)
+#v(0.3em)
+{% endfor %}
+{% endif %}
+
+{% if document.show_training is defined and document.show_training and training %}
+#section[Training]
+{% for item in training %}
+#text(size: 10pt, weight: "bold", fill: heading)[{{ item.name | default(item.title | default("")) | t }}]
+{% if item.provider or item.completed %}
+#linebreak()
+#text(size: 9pt, fill: muted)[
+  {% set ns = namespace(first=true) %}
+  {% if item.provider %}
+    {% if not ns.first %} • {% endif %}
+    {{ item.provider | t }}
+    {% set ns.first = false %}
+  {% endif %}
+  {% if item.completed %}
+    {% if not ns.first %} • {% endif %}
+    completed {{ item.completed | text_value | t }}
+    {% set ns.first = false %}
+  {% endif %}
+]
+{% endif %}
+#v(0.25em)
+{% endfor %}
+{% endif %}
+
+{% if document.show_certifications is defined and document.show_certifications and certifications %}
+#section[Certifications]
+{% for cert in certifications %}
+#text(size: 10pt, weight: "bold", fill: heading)[{{ cert.name | default("") | t }}]
+{% if cert.issuer or cert.issued or cert.expires or cert.credential_id %}
+#linebreak()
+#text(size: 9pt, fill: muted)[
+  {% set ns = namespace(first=true) %}
+  {% if cert.issuer %}
+    {% if not ns.first %} • {% endif %}
+    {{ cert.issuer | t }}
+    {% set ns.first = false %}
+  {% endif %}
+  {% if cert.issued %}
+    {% if not ns.first %} • {% endif %}
+    issued {{ cert.issued | text_value | t }}
+    {% set ns.first = false %}
+  {% endif %}
+  {% if cert.expires %}
+    {% if not ns.first %} • {% endif %}
+    expires {{ cert.expires | text_value | t }}
+    {% set ns.first = false %}
+  {% endif %}
+  {% if cert.credential_id %}
+    {% if not ns.first %} • {% endif %}
+    id {{ cert.credential_id | t }}
+    {% set ns.first = false %}
+  {% endif %}
+]
+{% endif %}
+#v(0.25em)
+{% endfor %}
+{% endif %}
+
+{% if document.show_clearance is defined and document.show_clearance and clearance %}
+#section[Clearance]
+{% for item in clearance %}
+#text(size: 10pt, weight: "bold", fill: heading)[{{ item.level | default(item.name | default("")) | t }}]
+{% if item.status or item.scope %}
+#linebreak()
+#text(size: 9pt, fill: muted)[
+  {% set ns = namespace(first=true) %}
+  {% if item.status %}
+    {% if not ns.first %} • {% endif %}
+    {{ item.status | t }}
+    {% set ns.first = false %}
+  {% endif %}
+  {% if item.scope %}
+    {% if not ns.first %} • {% endif %}
+    {{ item.scope | t }}
+    {% set ns.first = false %}
+  {% endif %}
+]
+{% endif %}
+#v(0.25em)
+{% endfor %}
+{% endif %}
